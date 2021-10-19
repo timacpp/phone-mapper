@@ -1,47 +1,42 @@
-//
-// Created by Katarzyna on 18/10/2021.
-//
-
-#include "maptel.h"
-#include <unordered_map>
 #include <iostream>
-
-using std::unordered_map;
-using std::string;
-using std::cout;
-using std::cerr;
-using std::to_string;
-
-#ifdef NDEBUG
-const bool debug = false;
-#else
-const bool debug = true;
-#endif
-
-using number = string;
-using dictionary = unordered_map<number, number>;
-using dictionary_id = unsigned long;
-using map_of_ddictionaries = unordered_map<dictionary_id, dictionary>;
+#include <unordered_map>
+#include "maptel.h"
 
 namespace {
-    map_of_ddictionaries maptel;
+    using std::unordered_map;
+    using std::cout, std::cerr;
+    using std::string, std::to_string;
+
+    using telnum = string;
+    using dict = unordered_map<telnum, telnum>;
+    using dict_id = unsigned long; // TODO: Być może uint32_t lub size_t?
+    using dictmap = unordered_map<dict_id, dict>;
+
+#ifdef NDEBUG
+    constexpr auto debug{false};
+#else
+    constexpr auto debug{true};
+#endif
+
+    dictmap maptel;
 
     void show_debug(const string &to_write) {
-        if (debug) cerr << "maptel: " << to_write << "\n";
+        if (debug) {
+            cerr << "maptel: " << to_write << "\n";
+        }
     }
 }
 
 #ifdef __cplusplus
 namespace jnp1 {
 #endif
-
 // Kasia
 // Tworzy słownik i zwraca liczbę naturalną będącą jego identyfikatorem.
     unsigned long maptel_create(void) {
         show_debug("maptel_create()");
 
         size_t id = maptel.size();
-        maptel.insert({id, dictionary()});
+        maptel.insert({id, dict()});
 
         show_debug("maptel_create: new map id = " + to_string(id));
 
@@ -62,7 +57,7 @@ namespace jnp1 {
     void maptel_insert(unsigned long id, char const *tel_src, char const *tel_dst) {
         show_debug("maptel_insert(" + to_string(id) + ", " + tel_src + ", " + tel_dst + ")");
 
-        dictionary chosen_dictionary = maptel.at(id);
+        dict chosen_dictionary = maptel.at(id);
         chosen_dictionary.insert({string(tel_src), string(tel_dst)});
 
         show_debug("maptel_insert: inserted");

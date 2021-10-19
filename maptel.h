@@ -1,9 +1,5 @@
-//
-// Created by Katarzyna on 18/10/2021.
-//
-
-#ifndef PHONE_MAPPER_MAPTEL_H
-#define PHONE_MAPPER_MAPTEL_H
+#ifndef MAPTEL_H
+#define MAPTEL_H
 
 #ifdef __cplusplus
 #include <cstdio>
@@ -12,7 +8,6 @@ extern "C" {
 #else
 #include <stdio.h>
 #endif
-
         const size_t TEL_NUM_MAX_LEN = 22;
 
         // Kasia
@@ -41,10 +36,9 @@ extern "C" {
         // przez tel_dst.
         void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len);
 
-
 #ifdef __cplusplus
     }
 }
 #endif
 
-#endif //PHONE_MAPPER_MAPTEL_H
+#endif // MAPTEL_H
