@@ -19,7 +19,10 @@ namespace {
     constexpr auto debug{true};
 #endif
 
-    dictmap maptel;
+    dictmap & maptel() {
+        static dictmap maptel;
+        return maptel;
+    }
     dict_id dict_count = 0;
 
     void show_debug(const string &to_write) {
@@ -41,37 +44,33 @@ namespace {
     }
 
     dict chek_and_get_dict(unsigned long id) {
-        assert(maptel.count(id) == 1);
+        assert(maptel().count(id) == 1);
 
-        return maptel[id];
+        return maptel()[id];
     }
 }
 
 namespace jnp1 {
 
-// Kasia
-// Tworzy słownik i zwraca liczbę naturalną będącą jego identyfikatorem.
+    // Kasia
     unsigned long maptel_create(void) {
         show_debug("maptel_create()");
 
         dict_id id{dict_count++};
-        maptel[id] = dict();
+        maptel()[id] = dict();
 
-        assert(maptel.count(id) == 1);
+        assert(maptel().count(id) == 1);
         show_debug("maptel_create: new map id = " + to_string(id));
 
         return id;
     }
 
-// Tima
-// Usuwa słownik o identyfikatorze id.
+    // Tima
     void maptel_delete(unsigned long id) {
         cout << "TO DO maptel delete: id=" << id << "\n";
     }
 
-// Kasia
-// Wstawia do słownika o identyfikatorze id informację o zmianie numeru
-// tel_src na numer tel_dst. Nadpisuje ewentualną istniejącą informację.
+    // Kasia
     void maptel_insert(unsigned long id, char const *tel_src, char const *tel_dst) {
         dict chosen_dict{chek_and_get_dict(id)};
         telnum str_tel_src{check_and_parse_number(tel_src)};
@@ -87,19 +86,12 @@ namespace jnp1 {
         show_debug("maptel_insert: inserted");
     }
 
-// Tima
-// Jeśli w słowniku o identyfikatorze id jest informacja o zmianie numeru
-// tel_src, to ją usuwa. W przeciwnym przypadku nic nie robi.
+    // Tima
     void maptel_erase(unsigned long id, char const *tel_src) {
         cout << "TO DO maptel erase: id=" << id << " tel_src=" << tel_src << "\n";
     }
 
-// Tima
-// Sprawdza, czy w słowniku o identyfikatorze id jest zapisana zmiana numeru
-// tel_src. Podąża ciągiem kolejnych zmian. Zapisuje zmieniony numer w tel_dst.
-// Jeśli nie ma zmiany numeru lub zmiany tworzą cykl, to zapisuje w tel_dst
-// numer tel_src. Wartość len to rozmiar przydzielonej pamięci wskazywanej
-// przez tel_dst.
+    // Tima
     void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len) {
         cout << "TO DO maptel transform: id=" << id << " tel_src=" << tel_src << " tel_dst="
              << tel_dst << " len=" << len << "\n";
