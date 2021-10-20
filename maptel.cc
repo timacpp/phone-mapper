@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <locale>
+#include <cassert>
 #include "maptel.h"
 
 namespace {
@@ -19,11 +20,15 @@ namespace {
     constexpr auto debug{true};
 #endif
 
-    dictmap & maptel() {
+    dictmap& maptel() {
         static dictmap maptel;
         return maptel;
     }
-    dict_id dict_count = 0;
+
+    dict_id& dict_count() {
+        static dict_id dict_count = 0;
+        return dict_count;
+    }
 
     void show_debug(const string &to_write) {
         if (debug)
@@ -56,7 +61,7 @@ namespace jnp1 {
     unsigned long maptel_create(void) {
         show_debug("maptel_create()");
 
-        dict_id id{dict_count++};
+        dict_id id{dict_count()++};
         maptel()[id] = dict();
 
         assert(maptel().count(id) == 1);
