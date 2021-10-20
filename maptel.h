@@ -3,10 +3,9 @@
 
 #ifdef __cplusplus
 #include <cstdio>
+
 extern "C" {
     namespace jnp1 {
-#else
-#include <stdio.h>
 #endif
         const size_t TEL_NUM_MAX_LEN = 22;
 

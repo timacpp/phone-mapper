@@ -27,9 +27,8 @@ namespace {
     }
 }
 
-#ifdef __cplusplus
 namespace jnp1 {
-#endif
+
 // Kasia
 // Tworzy słownik i zwraca liczbę naturalną będącą jego identyfikatorem.
     unsigned long maptel_create(void) {
@@ -80,8 +79,4 @@ namespace jnp1 {
         cout << "TO DO maptel transform: id=" << id << " tel_src=" << tel_src << " tel_dst="
              << tel_dst << " len=" << len << "\n";
     }
-
-#ifdef __cplusplus
 }
-#endif
-
