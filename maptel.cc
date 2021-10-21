@@ -1,17 +1,16 @@
-#include <iostream>
-#include <unordered_map>
-#include <locale>
 #include <cassert>
+#include <cstring>
+#include <unordered_map>
 #include "maptel.h"
 
 namespace {
+    using std::cerr;
+    using std::string;
     using std::unordered_map;
-    using std::cout, std::cerr;
-    using std::string, std::to_string;
 
     using telnum = string;
     using dict = unordered_map<telnum, telnum>;
-    using dict_id = unsigned long; // TODO: Być może uint32_t lub size_t?
+    using dict_id = size_t; // TODO: Być może uint32_t lub size_t?
     using dictmap = unordered_map<dict_id, dict>;
 
 #ifdef NDEBUG
@@ -26,79 +25,77 @@ namespace {
     }
 
     dict_id& dict_count() {
-        static dict_id dict_count = 0;
+        static dict_id dict_count{0L};
         return dict_count;
     }
 
-    void show_debug(const string &to_write) {
-        if (debug)
-            cerr << "maptel: " << to_write << "\n";
+    template<typename... Args>
+    void show_debug(const Args&... out) {
+        if (debug) {
+            cerr << "maptel: ";
+            (cerr << ... << out) << "\n";
+        }
     }
 
-    telnum check_and_parse_number(char const *tel) {
-        assert(tel);
+    bool telnum_validate(char const *tel) {
+        if (!tel)
+            return false;
 
-        for (size_t i = 0; tel[i]; i++){
-            assert(isdigit(tel[i]));
-            assert(i < jnp1::TEL_NUM_MAX_LEN);
+        for (size_t i{0}; tel[i]; i++) {
+            if (!std::isdigit(tel[i]))
+                return false;
         }
 
-        telnum result{telnum(tel)};
-
-        return result;
+        return true;
     }
 
-    dict chek_and_get_dict(unsigned long id) {
-        assert(maptel().count(id) == 1);
+    telnum telnum_create(char const *tel) {
+        assert(telnum_validate(tel));
+        return {tel};
+    }
 
+    dict get_dict(unsigned long id) {
+        assert(maptel().count(id));
         return maptel()[id];
     }
 }
 
 namespace jnp1 {
-
-    // Kasia
     unsigned long maptel_create(void) {
-        show_debug("maptel_create()");
+        show_debug(__FUNCTION__, "()");
 
-        dict_id id{dict_count()++};
-        maptel()[id] = dict();
+        dict_id next_id{dict_count()++};
+        maptel()[next_id] = dict();
 
-        assert(maptel().count(id) == 1);
-        show_debug("maptel_create: new map id = " + to_string(id));
+        assert(maptel().count(next_id));
+        show_debug(__FUNCTION__, "new map next_id = ", next_id);
 
-        return id;
+        return next_id;
     }
 
-    // Tima
     void maptel_delete(unsigned long id) {
-        cout << "TO DO maptel delete: id=" << id << "\n";
+
     }
 
-    // Kasia
     void maptel_insert(unsigned long id, char const *tel_src, char const *tel_dst) {
-        dict chosen_dict{chek_and_get_dict(id)};
-        telnum str_tel_src{check_and_parse_number(tel_src)};
-        telnum str_tel_dst{check_and_parse_number(tel_dst)};
+        dict chosen_dict{get_dict(id)};
+        const auto src{telnum_create(tel_src)};
+        const auto dest{telnum_create(tel_dst)};
 
-        show_debug("maptel_insert(" + to_string(id) + ", " + str_tel_src + ", " + str_tel_dst + ")");
+        show_debug(__FUNCTION__, '(', id, ", ", src, ", ", dest, ')');
 
-        chosen_dict[str_tel_src] = str_tel_dst;
+        chosen_dict[src] = dest;
 
-        assert(chosen_dict.count(str_tel_src) == 1);
-        assert(chosen_dict[str_tel_src] == str_tel_dst);
+        assert(chosen_dict.count(src) && chosen_dict[src] == dest);
 
-        show_debug("maptel_insert: inserted");
+        show_debug(__FUNCTION__,  " inserted");
     }
 
-    // Tima
     void maptel_erase(unsigned long id, char const *tel_src) {
-        cout << "TO DO maptel erase: id=" << id << " tel_src=" << tel_src << "\n";
+
     }
 
-    // Tima
     void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len) {
-        cout << "TO DO maptel transform: id=" << id << " tel_src=" << tel_src << " tel_dst="
-             << tel_dst << " len=" << len << "\n";
+
     }
 }
