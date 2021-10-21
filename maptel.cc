@@ -1,5 +1,7 @@
 #include <iostream>
 #include <unordered_map>
+#include <locale>
+#include <cassert>
 #include "maptel.h"
 
 namespace {
@@ -18,14 +20,38 @@ namespace {
     constexpr auto debug{true};
 #endif
 
-    dictmap & maptel() {
+    dictmap& maptel() {
         static dictmap maptel;
         return maptel;
+    }
+
+    dict_id& dict_count() {
+        static dict_id dict_count = 0;
+        return dict_count;
     }
 
     void show_debug(const string &to_write) {
         if (debug)
             cerr << "maptel: " << to_write << "\n";
+    }
+
+    telnum check_and_parse_number(char const *tel) {
+        assert(tel);
+
+        for (size_t i = 0; tel[i]; i++){
+            assert(isdigit(tel[i]));
+            assert(i < jnp1::TEL_NUM_MAX_LEN);
+        }
+
+        telnum result{telnum(tel)};
+
+        return result;
+    }
+
+    dict chek_and_get_dict(unsigned long id) {
+        assert(maptel().count(id) == 1);
+
+        return maptel()[id];
     }
 }
 
@@ -35,9 +61,10 @@ namespace jnp1 {
     unsigned long maptel_create(void) {
         show_debug("maptel_create()");
 
-        size_t id = maptel().size();
-        maptel().insert({id, dict()});
+        dict_id id{dict_count()++};
+        maptel()[id] = dict();
 
+        assert(maptel().count(id) == 1);
         show_debug("maptel_create: new map id = " + to_string(id));
 
         return id;
@@ -49,13 +76,17 @@ namespace jnp1 {
     }
 
     // Kasia
-    // TODO sprawdzać poprawność tel_src i tel_dst
-    // TODO obsłużyć błędy np brak podanego słownika
     void maptel_insert(unsigned long id, char const *tel_src, char const *tel_dst) {
-        show_debug("maptel_insert(" + to_string(id) + ", " + tel_src + ", " + tel_dst + ")");
+        dict chosen_dict{chek_and_get_dict(id)};
+        telnum str_tel_src{check_and_parse_number(tel_src)};
+        telnum str_tel_dst{check_and_parse_number(tel_dst)};
 
-        dict chosen_dictionary = maptel().at(id);
-        chosen_dictionary.insert({string(tel_src), string(tel_dst)});
+        show_debug("maptel_insert(" + to_string(id) + ", " + str_tel_src + ", " + str_tel_dst + ")");
+
+        chosen_dict[str_tel_src] = str_tel_dst;
+
+        assert(chosen_dict.count(str_tel_src) == 1);
+        assert(chosen_dict[str_tel_src] == str_tel_dst);
 
         show_debug("maptel_insert: inserted");
     }
