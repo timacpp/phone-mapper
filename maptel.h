@@ -2,10 +2,13 @@
 #define MAPTEL_H
 
 #ifdef __cplusplus
-#include <iostream>
+#include <iostream> // TODO: można zmienić na "ios_base::Init()" w maptel.cc - zapytać Zielenkiewicza?
+#include <cstdio>
 
 extern "C" {
     namespace jnp1 {
+#else
+#include <stdio.h>
 #endif
         const size_t TEL_NUM_MAX_LEN = 22;
 

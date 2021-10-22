@@ -54,7 +54,7 @@ namespace {
         return {tel};
     }
 
-    dict get_dict(unsigned long id) {
+    dict& get_dict(unsigned long id) {
         assert(maptel().count(id));
         return maptel()[id];
     }
@@ -68,7 +68,7 @@ namespace jnp1 {
         maptel()[next_id] = dict();
 
         assert(maptel().count(next_id));
-        show_debug(__FUNCTION__, "new map next_id = ", next_id);
+        show_debug(__FUNCTION__, ": new map next_id = ", next_id);
 
         return next_id;
     }
@@ -88,7 +88,7 @@ namespace jnp1 {
 
         assert(chosen_dict.count(src) && chosen_dict[src] == dest);
 
-        show_debug(__FUNCTION__,  " inserted");
+        show_debug(__FUNCTION__,  ": inserted");
     }
 
     void maptel_erase(unsigned long id, char const *tel_src) {
