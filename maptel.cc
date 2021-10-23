@@ -14,28 +14,34 @@ namespace {
     using dictmap = unordered_map<dict_id, dict>;
 
     class debug {
+        using msg_ref = const string&;
+
 #ifdef NDEBUG
         static constexpr auto debug_compile{false};
 #else
         static constexpr auto debug_compile{true};
 #endif
+
+        template<class... Args>
+        static void print_behaviour(msg_ref prefix, msg_ref separator,
+                                    msg_ref postfix, Args const&... args) {
+            cerr << "maptel: " << prefix;
+            ((cerr << args << separator), ...);
+            cerr << postfix;
+        }
     public:
 
         template<typename... Args>
         static void start_session(const string& func, Args const&... args) {
             if (debug_compile) {
-                cerr << "maptel: " << func << '(';
-                ((cerr << args << ", "), ...);
-                cerr << ")\n";
+                print_behaviour(func + '(', ", ", ")\n", args...);
             }
         }
 
         template<typename... Args>
         static void end_session(const string& func, Args const&... args) {
             if (debug_compile) {
-                cerr << "maptel: " << func;
-                ((cerr << args << ' '), ...);
-                cerr << '\n';
+                print_behaviour(func, " ", "\n", args...);
             }
         }
     };
