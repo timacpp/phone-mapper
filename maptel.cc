@@ -9,6 +9,7 @@ namespace {
     using std::string, std::strcpy;
     using std::pair, std::make_pair, std::tuple;
     using std::unordered_set, std::unordered_map;
+    using std::isdigit;
 
     using telnum = string;
     using dict_id = size_t;
@@ -76,7 +77,7 @@ namespace {
             return false;
 
         for (size_t i{0}; tel[i]; i++) {
-            if (!std::isdigit(tel[i]))
+            if (!isdigit(tel[i]) || i > jnp1::TEL_NUM_MAX_LEN)
                 return false;
         }
 
