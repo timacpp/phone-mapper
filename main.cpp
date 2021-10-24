@@ -1,6 +1,9 @@
 #include <iostream>
+#include "maptel.h"
 
 int main() {
-    std::cout << "Hello World!";
+    auto id{jnp1::maptel_create()};
+
+
 }
 
