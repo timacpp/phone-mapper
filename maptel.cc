@@ -25,7 +25,7 @@ namespace {
         using strtup = tuple<string, string, string>;
 
         template<typename Arg, typename... Args>
-        static void print_behaviour(const strtup& format, const Arg& first = "",
+        static void print_behaviour(const strtup& format, const Arg& first,
                                     const Args&... args) {
             const auto& [prefix, separator, postfix]{format};
             ((cerr << "maptel: " << prefix << first) << ... <<
@@ -34,7 +34,7 @@ namespace {
 
     public:
         template<typename Arg, typename... Args>
-        static void start_session(const string& func, const Arg& first = "",
+        static void start_session(const string& func, const Arg& first,
                                   const Args&... args) {
             if (debug_compile) {
                 print_behaviour({func + '(', ", ", ")"}, first, args...);
@@ -88,8 +88,8 @@ namespace {
         return {tel};
     }
 
-    pair<telnum&, bool> find_last_telnum(dict& from, telnum& src) {
-        telnum& last{src};
+    pair<telnum, bool> find_last_telnum(dict& from, const telnum& src) {
+        telnum last{src};
         bool cycle_exists = false;
         unordered_set<telnum> visited;
 
@@ -130,7 +130,7 @@ namespace jnp1 {
     }
 
     void maptel_insert(unsigned long id, char const *tel_src,char const *tel_dst) {
-        auto chosen_dict{get_dict(id)};
+        auto& chosen_dict{get_dict(id)};
         const auto src{telnum_create(tel_src)};
         const auto dest{telnum_create(tel_dst)};
 
@@ -144,7 +144,7 @@ namespace jnp1 {
     }
 
     void maptel_erase(unsigned long id, char const *tel_src) {
-        auto chosen_dict{get_dict(id)};
+        auto& chosen_dict{get_dict(id)};
         const auto src{telnum_create(tel_src)};
         const auto debug_end_msg{
                 chosen_dict.count(src) ? "erased" : "nothing to erase"
@@ -159,8 +159,8 @@ namespace jnp1 {
     }
 
     void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len) {
-        auto chosen_dict{get_dict(id)};
-        auto src{telnum_create(tel_src)};
+        auto& chosen_dict{get_dict(id)};
+        const auto src{telnum_create(tel_src)};
         const auto& [dest, cycle_exists]{find_last_telnum(chosen_dict, src)};
 
         debug::start_session(__FUNCTION__, id, tel_src, (void *) tel_dst, len);
