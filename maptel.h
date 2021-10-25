@@ -10,27 +10,22 @@ extern "C" {
 #else
 #include <stdio.h>
 #endif
+        /* Maximum length of a telephone number. */
         const size_t TEL_NUM_MAX_LEN = 22;
 
-        // Tworzy słownik i zwraca liczbę naturalną będącą jego identyfikatorem.
+        /* Creates a dictionary and returns its unique identifier */
         unsigned long maptel_create(void);
 
-        // Usuwa słownik o identyfikatorze id.
+        /* Deletes a dictionary of specified identifier */
         void maptel_delete(unsigned long id);
 
-        // Wstawia do słownika o identyfikatorze id informację o zmianie numeru
-        // tel_src na numer tel_dst. Nadpisuje ewentualną istniejącą informację.
+        /* Inserts or overwrites number change history to a dictionary.*/
         void maptel_insert(unsigned long id, char const *tel_src, char const *tel_dst);
 
-        // Jeśli w słowniku o identyfikatorze id jest informacja o zmianie numeru
-        // tel_src, to ją usuwa. W przeciwnym przypadku nic nie robi.
+        /* Erases number change history from a dictionary */
         void maptel_erase(unsigned long id, char const *tel_src);
 
-        // Sprawdza, czy w słowniku o identyfikatorze id jest zapisana zmiana numeru
-        // tel_src. Podąża ciągiem kolejnych zmian. Zapisuje zmieniony numer w tel_dst.
-        // Jeśli nie ma zmiany numeru lub zmiany tworzą cykl, to zapisuje w tel_dst
-        // numer tel_src. Wartość len to rozmiar przydzielonej pamięci wskazywanej
-        // przez tel_dst.
+        /* Extracts last number of change history from a dictionary and writes to a tel_dst. */
         void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len);
 
 #ifdef __cplusplus
