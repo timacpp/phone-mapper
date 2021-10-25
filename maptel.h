@@ -2,7 +2,7 @@
 #define MAPTEL_H
 
 #ifdef __cplusplus
-#include <iostream> // TODO: można zmienić na "ios_base::Init()" w maptel.cc - zapytać Zielenkiewicza?
+#include <iostream>
 #include <cstdio>
 
 extern "C" {
