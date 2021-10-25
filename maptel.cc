@@ -83,10 +83,12 @@ namespace {
         if (!tel)
             return false;
 
-        for (size_t i{0}; tel[i]; i++) {
-            if (!isdigit(tel[i]) || i > jnp1::TEL_NUM_MAX_LEN)
+        size_t size{0};
+        for (; tel[size]; size++) {
+            if (!isdigit(tel[size]) || size > jnp1::TEL_NUM_MAX_LEN)
                 return false;
         }
+        assert(size > 0);
 
         return true;
     }
@@ -169,6 +171,7 @@ namespace jnp1 {
     }
 
     void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len) {
+        assert(tel_dst);
         auto &chosen_dict{get_dict(id)};
         const auto src{telnum_create(tel_src)};
         const auto &[dest, cycle_exists]{find_last_telnum(chosen_dict, src)};
