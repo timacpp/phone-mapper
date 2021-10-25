@@ -137,7 +137,6 @@ namespace jnp1 {
 
         debug::start_session(__FUNCTION__, id, src, dest);
 
-        assert(!chosen_dict.count(src));
         chosen_dict[src] = dest;
         assert(chosen_dict.count(src) && chosen_dict[src] == dest);
 
