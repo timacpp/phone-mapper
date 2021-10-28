@@ -85,7 +85,7 @@ namespace {
 
         size_t size{0};
         for (; tel[size]; size++) {
-            if (!isdigit(tel[size]) || size > jnp1::TEL_NUM_MAX_LEN)
+            if (!isdigit(tel[size]) || size >= jnp1::TEL_NUM_MAX_LEN)
                 return false;
         }
         assert(size > 0);
