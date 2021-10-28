@@ -28,7 +28,7 @@ namespace {
         /* Outputs to cerr a pack of arguments with
          * selected message prefix, postfix and separator. */
         template<typename Arg, typename... Args>
-        static void print_behaviour(const strtup &format, const Arg &first,
+        [[maybe_unused]] static void print_behaviour(const strtup &format, const Arg &first,
                                     const Args &... args) {
             const auto& [prefix, separator, postfix]{format};
             ((cerr << "maptel: " << prefix << first) << ... <<
@@ -79,7 +79,7 @@ namespace {
         return found_dict->second;
     }
 
-    bool telnum_validate(char const *tel) {
+    [[maybe_unused]] bool telnum_validate(char const *tel) {
         if (!tel)
             return false;
 
@@ -149,7 +149,7 @@ namespace jnp1 {
 
         chosen_dict[src] = dest;
 
-        auto found_change = chosen_dict.find(src);
+        [[maybe_unused]] auto found_change = chosen_dict.find(src);
         assert(found_change != chosen_dict.end() && found_change->second == dest);
 
         debug::end_session(__FUNCTION__, "inserted");
