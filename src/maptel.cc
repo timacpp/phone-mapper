@@ -37,7 +37,7 @@ namespace {
 
     public:
 
-        /* Outputs to cerr a called function name and its parameters. */
+        /** Outputs to cerr a called function name and its parameters. */
         template<typename Arg, typename... Args>
         static void start_session(const string &func, const Arg &first,
                                   const Args &... args) {
@@ -46,14 +46,14 @@ namespace {
             }
         }
 
-        /* Outputs to cerr mid-result message of a called function */
+        /** Outputs to cerr mid-result message of a called function */
         static void print_message(const string &func, const string &msg) {
             if constexpr (debug_compile) {
                 print_behaviour({func + ": ", "", ""}, msg);
             }
         }
 
-        /* Outputs to cerr result status of a called function. */
+        /** Outputs to cerr result status of a called function. */
         template<typename Arg, typename... Args>
         static void end_session(const string &func, const Arg &first,
                                 const Args &... args) {
@@ -85,7 +85,7 @@ namespace {
 
         size_t size{0};
         for (; tel[size]; size++) {
-            if (!isdigit(tel[size]) || size >= jnp1::TEL_NUM_MAX_LEN)
+            if (!isdigit(tel[size]) || size >= mapper::TEL_NUM_MAX_LEN)
                 return false;
         }
         assert(size > 0);
@@ -98,7 +98,7 @@ namespace {
         return {tel};
     }
 
-    /* Finds last number in history change and returns it with cycle information. */
+    /** Finds last number in history change and returns it with cycle information. */
     pair<telnum, bool> find_last_telnum(dict &history, const telnum &src) {
         telnum last{src};
         bool cycle_found = false;
@@ -117,7 +117,7 @@ namespace {
     }
 }
 
-namespace jnp1 {
+namespace mapper {
     unsigned long maptel_create(void) {
         debug::start_session(__FUNCTION__, "");
 

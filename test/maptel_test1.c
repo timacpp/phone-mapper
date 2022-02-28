@@ -1,6 +1,6 @@
 #include <assert.h>
 #include <string.h>
-#include "../maptel.h"
+#include "../src/maptel.h"
 
 static const char t112[] = "112";
 static const char t997[] = "997";

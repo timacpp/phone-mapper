@@ -3,4 +3,6 @@ project(phone_mapper)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(phone_mapper main.cpp maptel.cc maptel.h main.cpp)
+set(SOURCE src/maptel.cc src/maptel.h)
+add_executable(test_c test/maptel_test1.c ${SOURCE})
+add_executable(test_cpp test/maptel_test2.cc ${SOURCE})
